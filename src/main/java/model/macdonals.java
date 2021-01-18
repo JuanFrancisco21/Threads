@@ -7,7 +7,7 @@ import javafx.scene.control.ListView;
 
 //This class has a list, producer (adds items to list
 // and consumer (removes items).
-public class multihilo {
+public class macdonals {
 	private final int capacity = 2;
 	int value=0;
 	private Boolean activeClient;
@@ -18,7 +18,7 @@ public class multihilo {
     // Size of list is 2.
     LinkedList<Integer> list = new LinkedList<>();
 
-    public multihilo(ListView<String> client, ListView<String> hAMBU) {
+    public macdonals(ListView<String> client, ListView<String> hAMBU) {
     	activeClient=true;
     	Client = client;
     	HAMBU = hAMBU;
@@ -40,17 +40,16 @@ public class multihilo {
 	 */
     public void produce(String name) throws InterruptedException{
         while (true) {
+        	System.out.print("");
             synchronized (this)
             {
                 // producer thread waits while list
                 // is full
                 while (list.size() == capacity || activeClient==false) {
-                	//Thread.currentThread().stop();
                     wait();
                 }
                 System.out.println("Produce - " + value);
                 addText(Client, name+"Cliente "+value+ " pide ");
-                // HAMBU.getItems().add("Pedido "+value+ " servido");
                 
 
                 // to insert the jobs in the list
@@ -93,7 +92,6 @@ public class multihilo {
                 // consumer thread waits while list
                 // is empty
                 while (list.isEmpty()) {
-                	//Thread.currentThread().stop();
                     wait();
 
                 } 
@@ -103,9 +101,8 @@ public class multihilo {
                 int val = list.removeFirst();
 
                 System.out.println("Consume-" + val);
-                addText(HAMBU, "Pedido "+val+ " servido en "+time);
+                addText(HAMBU, "Pedido "+val+ " servido en "+time+" segundos");
                 
-               // Client.getItems().add("Cliente "+val+ " pide");
 
                 // Wake up producer thread
                 notifyAll();
@@ -115,6 +112,7 @@ public class multihilo {
             }
         }
     }
+    
     /**
      * Funcion call to write text into ineterface
      * @param lv listview that gona be overwrite

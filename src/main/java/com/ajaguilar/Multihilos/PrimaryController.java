@@ -5,7 +5,9 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import model.multihilo;
+import model.macdonals;
+import model.cooperantes.Contador;
+import model.cooperantes.Hilo;
 
 public class PrimaryController {
 	@FXML
@@ -19,15 +21,23 @@ public class PrimaryController {
     @FXML
     private Button stop;
     
-    private multihilo pc;
+    private macdonals pc;
     Thread Cliente;
     Thread Cliente2;
     Thread Hamburgesa;
 
+    //Valores de contador cooperante
+    private static final int NUM_HILOS = 5; 
+	private static final int CUENTA_TOTAL = 50; 
     
     public void initialize() throws InterruptedException {
     	System.out.print("");
-    	pc = new multihilo(Client,HAMBU);
+    	pc = new macdonals(Client,HAMBU);
+		Client.getItems().add("Contandos todos los trabajadores");
+
+		Thread.currentThread().sleep(2000);
+    	contadorTrabajadores();
+
 	}
 
     /**
@@ -37,6 +47,8 @@ public class PrimaryController {
      */
     @FXML
     public void Inicio()  throws InterruptedException {
+		Client.getItems().clear();
+		
     	//Hide buttos for error control, before Thread saludo start.
         start.setVisible(false);
         inicio.setVisible(false);
@@ -87,28 +99,6 @@ public class PrimaryController {
         });
         
         
-		        Thread saludo = new Thread(new Runnable() {
-		            @Override
-		            public void run()
-		            {
-		            	try {
-							Thread.currentThread().sleep(2000);
-							System.out.println("Inicializando el programa");
-							Thread.currentThread().sleep(1000);
-							System.out.println("Probando el join de los hilos.");
-							Thread.currentThread().sleep(2000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-		            }
-		        });
- 
-		
-        
-        saludo.start();
-        saludo.join();
-        
 		//Show stop button when saludo thread die.
         stop.setVisible(true);
 
@@ -119,6 +109,38 @@ public class PrimaryController {
         
  
     }
+    
+    private void contadorTrabajadores(){
+    	try {
+	    	Contador c = new Contador();
+			Thread[] hilos = new Thread[NUM_HILOS];
+				
+			for (int i = 0; i < NUM_HILOS; i++) {
+				Thread th= new Thread(new Hilo(i, CUENTA_TOTAL/NUM_HILOS,c));
+				th.start();
+				hilos[i] = th;
+	
+	
+				if (i==NUM_HILOS-1) {
+					try {
+						th.join();
+						
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			Client.getItems().add("Trabajadores totales:"+c.getCuenta());
+			System.out.printf("Trabajadores totales: %s\n",c.getCuenta());
+	    	
+
+    	} catch (Exception e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+    }
+    
     
     /**
      * Restart Clientes Thread.
