@@ -33,7 +33,11 @@ public class multihilo {
 	}
 
 
-	// Function called by producer thread
+	/**
+	 * Function called by producer thread
+	 * @param name of thread
+	 * @throws InterruptedException
+	 */
     public void produce(String name) throws InterruptedException{
         while (true) {
             synchronized (this)
@@ -64,7 +68,10 @@ public class multihilo {
     }
     
     
-    
+    /**
+     * Function called by controller to notify all Threads
+     * @throws InterruptedException
+     */
     public synchronized void  notifi() throws InterruptedException{
              // notifies the consumer thread that
              // now it can start consuming
@@ -73,9 +80,11 @@ public class multihilo {
     
     
     
-    
 
-    // Function called by consumer thread
+    /**
+     * Function called by consumer thread
+     * @throws InterruptedException
+     */
     public void consume() throws InterruptedException{
         while (true) {
         	System.out.print("");
@@ -106,8 +115,12 @@ public class multihilo {
             }
         }
     }
-    
-    private void addText(ListView<String> lv,String st) {
+    /**
+     * Funcion call to write text into ineterface
+     * @param lv listview that gona be overwrite
+     * @param st string to write
+     */
+    private synchronized void addText(ListView<String> lv,String st) {
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {

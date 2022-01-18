@@ -24,11 +24,17 @@ public class PrimaryController {
     Thread Cliente2;
     Thread Hamburgesa;
 
+    
     public void initialize() throws InterruptedException {
     	System.out.print("");
     	pc = new multihilo(Client,HAMBU);
 	}
 
+    /**
+     * Function called by inicio button, start saludo thread, which use join.
+     * after saludo thread die, start 2 producer threads and 1 consumer thread.
+     * @throws InterruptedException
+     */
     @FXML
     public void Inicio()  throws InterruptedException {
     	//Hide buttos for error control, before Thread saludo start.
@@ -113,6 +119,7 @@ public class PrimaryController {
         
  
     }
+    
     /**
      * Restart Clientes Thread.
      */
