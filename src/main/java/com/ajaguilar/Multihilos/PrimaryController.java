@@ -37,7 +37,7 @@ public class PrimaryController {
 
 		Thread.currentThread().sleep(2000);
     	contadorTrabajadores();
-
+ 
 	}
 
     /**

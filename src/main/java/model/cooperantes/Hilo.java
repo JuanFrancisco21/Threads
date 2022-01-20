@@ -19,7 +19,7 @@ public class Hilo extends Thread{
 	}
 
 	public Hilo(int numHilo, int miParte, Contador cont) {
-		this.numHilo = numHilo;
+		this.numHilo = numHilo; 
 		this.miParte = miParte;
 		this.cont = cont;
 	}

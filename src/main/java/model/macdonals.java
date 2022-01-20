@@ -89,7 +89,7 @@ public class macdonals {
         	System.out.print("");
         	synchronized (this)
             {
-                // consumer thread waits while list
+                // consumer thread waits while list 
                 // is empty
                 while (list.isEmpty()) {
                     wait();
